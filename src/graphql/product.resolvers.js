@@ -1,20 +1,25 @@
+const ProductsService = require('./../services/product.service');
+const service = new ProductsService();
+
 const getProduct = (_, { id }) => {
-    return {
-        id,
-        name: 'Product 1',
-        price: 299.99,
-        description: 'el producto es...',
-        image: 'http://image.ejemplo',
-        createdAt: new Date().toISOString(),
-    }
+    return service.findOne(id)
 };
 
-const getProducts = () => {
-    return [];
+const getProducts =  () => {
+    return service.find({});
 };
 
-// const addProduct = () => {
-// //code add product 
-// }
+const addProduct = (_, { dto }) => {
+    return service.create(dto);
+}
 
-module.exports = {getProduct, getProducts};
+const updateProduct = (_, {id, dto}) => {
+    return service.update(id, dto);
+}
+
+const deleteProduct = async (_, { id }) => {
+    await service.delete(id);
+    return id;
+}
+
+module.exports = {getProduct, getProducts, addProduct, updateProduct, deleteProduct};
